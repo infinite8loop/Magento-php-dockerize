@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    web: magento
+  name: magento
+spec:
+  ports:
+    - name: magento-service-lb
+      port: 80
+      targetPort: 80
+  type: LoadBalancer
+  selector:
+    web: magento
+# status:
+#   loadBalancer: {}

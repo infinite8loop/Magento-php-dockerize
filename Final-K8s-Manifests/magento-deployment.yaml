@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    web: magento
+  name: magento
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      web: magento
+  strategy: 
+    type: Recreate  
+  template:
+    metadata:
+      labels:
+        web: magento
+    spec:
+      containers:
+        - env:
+            - name: MAGENTO_DB_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: magento-configmap
+                  key: database_url
+            - name: MAGENTO_DB_NAME
+              value: magento002
+            - name: MAGENTO_DB_PASSWORD
+              value: magento002
+            - name: MAGENTO_DB_USER
+              value: magento002
+          image: chinpan111999/magentov1:v6
+          name: magento
+          resources:
+            limits:
+              cpu: "1"
+            requests:
+              cpu: "0.5"
+          ports:
+            - containerPort: 80
+      restartPolicy: Always
+# status: {}
